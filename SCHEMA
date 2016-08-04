@@ -1,0 +1,41 @@
+user
+	name
+	color
+	hash
+	salt
+	
+	contacts [user]
+
+
+chat
+	user1 
+	user2 
+	
+	messages [
+		message
+		from (user)
+	]
+
+
+
+
+tela1
+	logar -> retorna user 
+
+tela2 (logado)
+	exibe logado.contacts []
+	e para cada contato -> api.getLastMessage(logado, contato)
+	
+
+chat java local (user1, user2)
+tela3 (chat, logado) 
+	
+	ao abrir chat: 
+		Chat chat = api.getChat(chat.user1, chat.user2)
+		if(!chat)
+			-> usar chat localmente -> E SE MENSAGEM FOR ENVIADA -> api.postChat( chat )
+		
+		else
+			-> usar chat -> AO ENVIAR MENSAGEM -> api.postMessage( chat.id, message )
+			
+
