@@ -2,6 +2,8 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var UserContacts = mongoose.model('UserContacts');
 
+//var mongoosething = require('../../mongoosething/mongoosething');
+
 function sendResponse(res, status, json){
 	res.status(status);
 	res.json(json);
@@ -34,7 +36,13 @@ module.exports.addcontact = function(req, res){
 					return;
 				}
 				
-				record.contacts.push(targetuser.user);
+				innerAddContact(record, targetuser, function(updated){
+					innerAddContact(targetuser, updated, function(targetupdated){
+						sendResponse(res, 200, updated);
+					});
+				});
+
+				/*record.contacts.push(targetuser.user);
 				console.log("adicionou aos contatos");
 				
 					record.save(function(err, updated){
@@ -49,9 +57,28 @@ module.exports.addcontact = function(req, res){
 
 						sendResponse(res, 200, updated);
 						return updated;
-					});
+					});*/
 				
 			});
+
+			function innerAddContact(user, targetUser, success){
+				user.contacts.push(targetUser.user);	
+				user.save(function(err, updated){
+
+					if(err){
+							sendResponse(res, 500, err);
+							return;
+						}
+						if(!updated){
+							sendResponse(res, 404, {"msg":"error on updating user contacts"});
+							return;
+						}
+
+						success(updated);
+
+				});
+			}
+
 	});
 
 };
@@ -62,25 +89,27 @@ module.exports.login = function(req, res){
 		"user.name":req.body.name
 	}, function(err, record){
 			if(err){
-				sendResponse(res, 500, err);
+				sendResponse(res, 500, {"err":err, "success":"false"});
 				return;
 			}
 			if(!record){
-				sendResponse(res, 404, {"msg":"user not found!"});
+				sendResponse(res, 404, {"msg":"user not found!", "success":"false"});
 				return;
 			}
 
 			var user = new User(record.user);
 			if( !user.validPassword(req.body.password) ){
-				sendResponse(res, 404, {"msg":"invalid password"});
+				sendResponse(res, 404, {"msg":"invalid password", "success":"false"});
 				return;
 			}
 
 
-			sendResponse(res, 200, record);
+			sendResponse(res, 200, {"success":"true", "usercontacts":record});
 	});
 
 };
+
+
 
 module.exports.register = function(req, res){
 
