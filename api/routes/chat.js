@@ -32,7 +32,7 @@ router.get('/chat/:user1/:user2', function(req, res){
 router.post('/chat', function(req, res){
 
 	if(!req.body.chat){
-		sendResponse(res, 400, {"msg":"missing parameters"});
+		sendResponse(res, 400, {"msg":"missing parameters", "success":"false"});
 		return;
 	}
 

@@ -20,15 +20,15 @@ module.exports.getChat = function(req, res){
 	}, function(err, record){
 
 		if(err){
-			sendResponse(res, 500, err);
+			sendResponse(res, 500, {"err":err, "success":"false"});
 			return;
 		}
 		if(!record){
-			sendResponse(res, 404, {"msg":"chat not found"});
+			sendResponse(res, 404, {"msg":"chat not found", "success":"false"});
 			return;
 		}
 
-		sendResponse(res, 200, record);
+		sendResponse(res, 200, {"chat":record, "success":"true"});
 
 	});
 
@@ -76,15 +76,15 @@ module.exports.newChat = function(req, res){
 	chat.save(function(err, result){
 
 		if(err){
-			sendResponse(res, 500, err);
+			sendResponse(res, 500, {err:err, "success":"false"});
 			return;
 		}
 		if(!result){
-			sendResponse(res, 500, {"msg":"It wasn't possible save this chat"});
+			sendResponse(res, 500, {"msg":"It wasn't possible save this chat", "success":"false"});
 			return;
 		}
 		
-		sendResponse(res, 200, result);
+		sendResponse(res, 200, {"success":"true", "chat": result});
 
 	});
 
