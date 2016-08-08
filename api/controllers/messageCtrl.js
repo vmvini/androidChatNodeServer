@@ -16,7 +16,7 @@ module.exports.sendMessage = function(req, res){
 			return;
 		}
 		if(!chat){
-			sendResponse(res, 404, {"msg":"chat not found"});
+			sendResponse(res, 200, {"msg":"chat not found"});
 			return;
 		}
 

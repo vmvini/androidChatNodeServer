@@ -20,7 +20,7 @@ module.exports.addcontact = function(req, res){
 				return;
 			}
 			if(!record){
-				sendResponse(res, 404, {"msg":"user not found!"});
+				sendResponse(res, 200, {"msg":"user not found!"});
 				return;
 			}
 
@@ -32,7 +32,7 @@ module.exports.addcontact = function(req, res){
 					return;
 				}
 				if(!targetuser){
-					sendResponse(res, 404, {"msg":"targetuser not found!"});
+					sendResponse(res, 200, {"msg":"targetuser not found!"});
 					return;
 				}
 				
@@ -70,7 +70,7 @@ module.exports.addcontact = function(req, res){
 							return;
 						}
 						if(!updated){
-							sendResponse(res, 404, {"msg":"error on updating user contacts"});
+							sendResponse(res, 200, {"msg":"error on updating user contacts"});
 							return;
 						}
 
@@ -93,13 +93,13 @@ module.exports.login = function(req, res){
 				return;
 			}
 			if(!record){
-				sendResponse(res, 404, {"msg":"user not found!", "success":"false"});
+				sendResponse(res, 200, {"msg":"user not found!", "success":"false"});
 				return;
 			}
 
 			var user = new User(record.user);
 			if( !user.validPassword(req.body.password) ){
-				sendResponse(res, 404, {"msg":"invalid password", "success":"false"});
+				sendResponse(res, 200, {"msg":"invalid password", "success":"false"});
 				return;
 			}
 
