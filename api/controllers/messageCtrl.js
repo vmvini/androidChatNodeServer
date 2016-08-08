@@ -23,7 +23,10 @@ module.exports.sendMessage = function(req, res){
 		if(!chat.messages){
 			chat.messages = [];
 		}
-		chat.messages.push(req.body.message);
+
+		var msgObj = JSON.parse(req.body.message);
+
+		chat.messages.push(msgObj);
 
 		chat.save(function(err, updated){
 

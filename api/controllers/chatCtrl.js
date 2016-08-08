@@ -26,15 +26,46 @@ module.exports.getChat = function(req, res){
 		}
 		if(!record){
 			
-			sendResponse(res, 200, {"msg":"chat not found", "success":"false"});
-			return;
+			//sendResponse(res, 200, {"msg":"chat not found", "success":"false"});
+			//return;
+			reverseSearch(req.params.user1, req.params.user2);
+		}
+
+		else{
+			sendResponse(res, 200, {"chat":record, "success":"true"});
 		}
 
 		
 
-		sendResponse(res, 200, {"chat":record, "success":"true"});
-
 	});
+
+	function reverseSearch(user1, user2){
+
+		Chat.findOne({
+
+				"user1._id": user2,
+				"user2._id": user1
+
+			}, function(err, record){
+
+				if(err){
+					sendResponse(res, 500, err);
+					return;
+				}
+				if(!record){
+					sendResponse(res, 200, {"msg":"chat not found", "success":"false"});
+					return;
+				}
+				
+				sendResponse(res, 200, {"chat":record, "success":"true"});
+
+						
+				
+				
+		});
+
+
+	}
 
 
 };
